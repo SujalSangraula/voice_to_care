@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 import 'audioRecordWidget.dart';
+import 'emotionApiService.dart';
+import 'emotionResultPage.dart';
 
 class Homepage extends StatefulWidget {
   const Homepage({super.key});
@@ -12,6 +14,9 @@ class Homepage extends StatefulWidget {
 class _HomepageState extends State<Homepage> {
 
   TextEditingController emotion = TextEditingController();
+  String? detectedEmotion;
+  double? confidence;
+  bool isLoading= false;
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +246,8 @@ class _HomepageState extends State<Homepage> {
                        ),
                        child: GestureDetector(
                          onTap: () async {
-                           String? recordedFilePath = await showModalBottomSheet<String>(
+                           String? recordedFilePath =
+                           await showModalBottomSheet<String>(
                              context: context,
                              isScrollControlled: true,
                              backgroundColor: Colors.transparent,
@@ -253,12 +259,41 @@ class _HomepageState extends State<Homepage> {
                              ),
                            );
 
-                           if (recordedFilePath != null) {
+                           if (recordedFilePath == null) return;
+
+                           // Optional loading indicator
+                           showDialog(
+                             context: context,
+                             barrierDismissible: false,
+                             builder: (_) => const Center(
+                               child: CircularProgressIndicator(),
+                             ),
+                           );
+
+                           try {
+                             final result =
+                             await EmotionApiService.analyzeAudio(recordedFilePath);
+
+                             Navigator.pop(context); // remove loading dialog
+
+                             Navigator.push(
+                               context,
+                               MaterialPageRoute(
+                                 builder: (_) => EmotionResultPage(
+                                   emotion: result['emotion'],
+                                   confidence: result['confidence'],
+                                 ),
+                               ),
+                             );
+                           } catch (e) {
+                             Navigator.pop(context);
+
                              ScaffoldMessenger.of(context).showSnackBar(
-                               SnackBar(content: Text('Audio saved at: $recordedFilePath')),
+                               const SnackBar(content: Text("Emotion analysis failed")),
                              );
                            }
                          },
+
                          child: Row(
                            mainAxisAlignment: MainAxisAlignment.center,
                            children: [
