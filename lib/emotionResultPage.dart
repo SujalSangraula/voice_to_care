@@ -17,9 +17,9 @@ class EmotionResultPage extends StatelessWidget {
       case 'sad':
         return 'You seem SAD what can I do to help you?😢';
       case 'angry':
-        return 'Relax you are ANGRY right now stak calm..😠';
+        return 'Relax you are ANGRY right now stay calm..😠';
       default:
-        return 'NEURAL BOARING😐';
+        return 'NEURAL BORING😐';
     }
   }
 
@@ -27,36 +27,68 @@ class EmotionResultPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Detected Emotion"),
-        centerTitle: true,
+        title: Text("Detected Emotion"),centerTitle: true,
       ),
-      body: Container(
-        margin: const EdgeInsets.all(30),
-        padding: const EdgeInsets.all(30),
-        decoration: BoxDecoration(
-          color: Colors.deepPurple[50],
-          borderRadius: BorderRadius.circular(25),
-        ),
+      body: SingleChildScrollView(
         child: Column(
-          mainAxisSize: MainAxisSize.min,
           children: [
-            Text(
-              _emotionEmoji(emotion),
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 20),
-            Text(
-              emotion.toUpperCase(),
-              style: const TextStyle(
-                fontSize: 26,
-                fontWeight: FontWeight.bold,
+            Center(
+              child: Container(
+                height: 250,
+                width: 350,
+                margin: EdgeInsets.all(20),
+                padding: EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  color: Colors.deepPurple[50],
+                  borderRadius: BorderRadius.circular(20),
+                ),
+                child: Column(
+                  children: [
+                    Text(
+                      _emotionEmoji(emotion),
+                      style: TextStyle(
+                        fontSize: 25,
+                      ),
+                    ),
+                    const SizedBox(height: 30,),
+                    Text(
+                      emotion.toUpperCase(),
+                      style: TextStyle(
+                        fontSize: 45,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 10,),
+                    Text(
+                      "Confidence: ${(confidence*100).toStringAsFixed(1)}%",
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontSize: 16
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-            const SizedBox(height: 10),
-            Text(
-              "Confidence: ${(confidence * 100).toStringAsFixed(1)}%",
-              style: const TextStyle(color: Colors.grey),
+            const SizedBox(height: 30,),
+            Container(
+              margin: EdgeInsets.all(20),
+              padding: EdgeInsets.all(20),
+              height: 550,
+              width: 350,
+              decoration: BoxDecoration(
+                color: Colors.purple[100],
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Column(
+                children: [
+                  Text(emotion.toUpperCase(),style: TextStyle(fontSize: 30,fontWeight: FontWeight.bold),),
+                  SizedBox(height: 10,),
+
+                ],
+              ),
             ),
+            const SizedBox(height: 40,),
           ],
         ),
       ),
