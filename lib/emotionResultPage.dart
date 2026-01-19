@@ -32,7 +32,7 @@ class EmotionResultPage extends StatelessWidget {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Center(
+            Center (
               child: Container(
                 height: 250,
                 width: 350,
