@@ -54,12 +54,13 @@ class _AudioRecorderWidgetState extends State<AudioRecorderWidget> {
     }
 
     String path =
-        '${downloadsDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.m4a';
+        '${downloadsDir.path}/audio_${DateTime.now().millisecondsSinceEpoch}.wav';
 
     final config = RecordConfig(
-      encoder: AudioEncoder.aacLc,
+      encoder: AudioEncoder.wav,
+      sampleRate: 16000,
+      numChannels: 1,
       bitRate: 128000,
-      sampleRate: 44100,
     );
 
     await _recorder.start(config, path: path);
